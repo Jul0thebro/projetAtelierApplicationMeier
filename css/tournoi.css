@@ -1,0 +1,242 @@
+@import 'https://fonts.googleapis.com/css?family=Roboto+Slab:400,700';
+html {
+    font-size: 1rem;
+}
+
+body {
+    background: #f0f2f2;
+}
+
+
+/*Centre le toute*/
+
+.bracket {
+    position: absolute;
+    top: 50%;
+    font-size: 0;
+}
+
+
+/*permet d'aligner le toute */
+
+.bracket .round {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+
+/*aligne le relignage et les boxs de matchups*/
+
+.bracket .round .winners>div {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+
+/*?*/
+
+.bracket .round .winners>div.matchups .matchup:last-child {
+    margin-bottom: 0 !important;
+}
+
+
+/*?*/
+
+.bracket .round .winners>div.matchups .matchup .participants {
+    border-radius: 0.25rem;
+    overflow: hidden;
+}
+
+
+/*crée la box blanche qui contient le matchup*/
+
+.bracket .round .winners>div.matchups .matchup .participants .participant {
+    box-sizing: border-box;
+    color: #858585;
+    border-left: 0.25rem solid #858585;
+    background: white;
+    width: 14rem;
+    height: 3rem;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12);
+}
+
+
+/*couleur*/
+
+.bracket .round .winners>div.matchups .matchup .participants .participant.winner {
+    color: #60c645;
+    border-color: #60c645;
+}
+
+
+/*couleur*/
+
+.bracket .round .winners>div.matchups .matchup .participants .participant.loser {
+    color: #dc563f;
+    border-color: #dc563f;
+}
+
+
+/*parametre de la bordure*/
+
+.bracket .round .winners>div.matchups .matchup .participants .participant:not(:last-child) {
+    border-bottom: thin solid #f0f2f2;
+}
+
+
+/*parametre du texte*/
+
+.bracket .round .winners>div.matchups .matchup .participants .participant span {
+    margin: 0 1.25rem;
+    line-height: 3;
+    font-size: 1rem;
+    font-family: "Roboto Slab";
+}
+
+
+/*couleur*/
+
+.bracket .round .winners>div.connector.filled .line,
+.bracket .round .winners>div.connector.filled.bottom .merger:after,
+.bracket .round .winners>div.connector.filled.top .merger:before {
+    border-color: #60c645;
+}
+
+
+/*place bien les reliements */
+
+.bracket .round .winners>div.connector .line,
+.bracket .round .winners>div.connector .merger {
+    box-sizing: border-box;
+    width: 2rem;
+    display: inline-block;
+    vertical-align: top;
+}
+
+
+/*parametre du reliement*/
+
+.bracket .round .winners>div.connector .line {
+    border-bottom: thin solid #c0c0c8;
+    height: 4rem;
+}
+
+
+/*parametre du reliement*/
+
+.bracket .round .winners>div.connector .merger {
+    position: relative;
+    height: 8rem;
+}
+
+
+/*parametre du reliement*/
+
+.bracket .round .winners>div.connector .merger:before,
+.bracket .round .winners>div.connector .merger:after {
+    content: "";
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    height: 50%;
+    border: 0 solid;
+    border-color: #c0c0c8;
+}
+
+.bracket .round .winners>div.connector .merger:before {
+    border-right-width: thin;
+    border-top-width: thin;
+}
+
+.bracket .round .winners>div.connector .merger:after {
+    border-right-width: thin;
+    border-bottom-width: thin;
+}
+
+
+/* écart entre les seeds */
+
+.bracket .round.quarterfinals .winners:not(:last-child) {
+    margin-bottom: 7.6rem;
+}
+
+
+/* écart entre le matchup */
+
+.bracket .round.quarterfinals .winners .matchups .matchup:not(:last-child) {
+    margin-bottom: 6.2rem;
+}
+
+.bracket .round.quarterfinals .winners .connector .line {
+    height: 0.01rem;
+}
+
+
+/* Bon placement du reliement entre les matchups*/
+
+.bracket .round.quarterfinals .winners .connector .merger {
+    height: 0.4rem;
+}
+
+
+/* écart entre les matchups */
+
+.bracket .round.semifinals .winners .matchups .matchup:not(:last-child) {
+    margin-bottom: 29rem;
+}
+
+
+/* Bon placement du reliement entre les matchups*/
+
+.bracket .round.semifinals .winners .connector .merger {
+    height: 30rem;
+}
+
+
+/* Bon placement du reliement entre le prochain matchup */
+
+.bracket .round.semifinals .winners .connector .line {
+    height: 11rem;
+}
+
+.bracket .round.finals .winners .connector .merger {
+    height: 2rem;
+}
+
+.bracket .round.finals .winners .connector .line {
+    height: 1.5rem;
+}
+
+.bracket .round.eighthfinals .winners:not(:last-child) {
+    margin-bottom: 2rem;
+}
+
+.bracket .round.eighthfinals .winners .matchups .matchup:not(:last-child) {
+    margin-bottom: 2rem;
+}
+
+.bracket .round.eighthfinals .winners .connector .line {
+    height: 3rem;
+}
+
+
+/* Bon placement du reliement entre les matchups*/
+
+.bracket .round.eighthfinals .winners .connector .merger {
+    height: 12rem;
+}
+
+.bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+@media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+    }
+}
