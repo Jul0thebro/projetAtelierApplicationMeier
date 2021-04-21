@@ -66,6 +66,9 @@ $pseudoUser = "";
                 } else {
                     echo "<br><button type=\"button\" class=\"btn btn-primary\" data-bs-toggle=\"modal\" data-bs-target=\"#exampleModal\">
                             Se déconnecter
+                          </button> 
+                          <button type=\"button\" class=\"btn btn-primary\" data-bs-toggle=\"modal\" data-bs-target=\"#modalModif\">
+                            Profil
                           </button>";
                 }
 
@@ -73,6 +76,7 @@ $pseudoUser = "";
             </li>
         </ul>
     </nav>
+
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -87,48 +91,86 @@ $pseudoUser = "";
                 <div class="modal-footer">
                     <a href="?uc=accueil" data-bs-dismiss="modal" class="btn btn-primary" role="button" data-bs-toggle="button">Annuler</a>
                     <a href="?uc=Deconnexion" class="btn btn-primary">Confirmer</a>
-
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Modal modification de profil-->
+    <div class="modal fade" id="modalModif" tabindex="-1" aria-labelledby="modalLabelModif" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabelModif">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div class="container-fluid">
         <div class="row">
             <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
                 <div class="sidebar-sticky pt-3">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="btn btn-info mb-1" href="?uc=accueil">
+                            <a class="btn btn-primary mb-1" href="?uc=accueil">
                                 <span data-feather="home"></span> Accueil <span class="sr-only">(current)</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="btn btn-info mb-1" href="?uc=equipes">
+                            <a class="btn btn-primary mb-1" href="?uc=equipes">
                                 Voir les équipes
                             </a>
                         </li>
                         <li class="nav-item">
-                        <?php 
-                        if ($_SESSION["pseudo"]["pseudo"] != null){
-                            echo "<a class=\"btn btn-info mb-1\" href=\"?uc=CreerEquipe\">
+                            <?php
+                            if ($_SESSION["pseudo"]["pseudo"] != null) {
+                                $idPlayer = recupIdPlayer($_SESSION["pseudo"]["pseudo"]);
+                                $idTeam = verifSiDejaIdTeam($idPlayer["idPlayer"]);
+                                if ($idTeam["idEquipe"] == null) {
+                                    echo "<a class=\"btn btn-primary mb-1\" href=\"?uc=CreerEquipe\">
                                 Créer une équipe
                                 </a>";
-                        }
-                        else {
-                            echo "<a class=\"btn btn-info mb-1\" href=\"\">
+                                } else {
+                                }
+                            } else {
+                                echo "<a class=\"btn btn-primary mb-1\" href=\"\">
                                 Créer une équipe
                                 </a>";
-                        }
-                        ?>
+                            }
+                            ?>
                         </li>
                         <li class="nav-item">
-                            <a class="btn btn-info" href="#">
+                            <?php
+                            if ($_SESSION["pseudo"]["pseudo"] != null) {
+                                $idPlayer = recupIdPlayer($_SESSION["pseudo"]["pseudo"]);
+                                $idTeam = verifSiDejaIdTeam($idPlayer["idPlayer"]);
+                                if ($idTeam["idEquipe"] != null) {
+                                    echo "<a class=\"btn btn-primary mb-1\" href=\"?uc=equipe&&id=" . $idTeam["idEquipe"] . "\">
+                                    Mon équipe
+                                    </a>";
+                                } else {
+                                }
+                            } else {
+                                echo "<a class=\"btn btn-primary mb-1\" href=\"\">
                                 Mon équipe
-                            </a>
+                                </a>";
+                            }
+                            ?>
                         </li>
                     </ul>
                 </div>
             </nav>
+
 
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">

@@ -5,9 +5,9 @@ $jeu = filter_input(INPUT_POST, 'jeu', FILTER_SANITIZE_STRING);
 if ($nomEquipe != null && $jeu != null) {
     $idGame = takeIdGame($jeu);
     $idJoueur= recupIdPlayer($_SESSION["pseudo"]["pseudo"]);
-    $idEquipe = recupIdTeam();
     //Il faut récupérer l'id du joueur pour pouvoir le modifier avec l'update
     addTeam($nomEquipe, $idGame["idJeu"]);
+    $idEquipe = recupIdTeam();
     changementDroitCapitaine($idJoueur["idPlayer"], $idEquipe["MAX(idEquipe)"]);
     header("Location: ?uc=accueil");
 }

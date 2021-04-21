@@ -1,3 +1,4 @@
+<br><br>
 <div class="table-responsive">
     <!-- Main content -->
     <section class="content">
@@ -9,16 +10,14 @@
                         <div class="card-body">
                             <table id="example2" class="table table-bordered table-hover">
                                 <thead>
-                                    <tr>
+                                    <tr class="table-secondary">
                                         <th>Regarder l'équipe</th>
                                         <th>Nom de l'équipe</th>
-                                        <th>Date de création</th>
-                                        <th>nombre de joueurs</th>
                                         <th hidden>id</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php echo arrayToHtmlTableTeams(affichageEquipes()); ?>
+                                    <?php echo $equipes; ?>
                                 </tbody>
 
                             </table>
@@ -34,8 +33,4 @@
         <!-- /.container-fluid -->
     </section>
     <!-- /.content -->
-</div>
-</div>
-</main>
-</div>
 </div>

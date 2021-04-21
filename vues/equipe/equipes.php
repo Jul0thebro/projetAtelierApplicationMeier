@@ -9,19 +9,17 @@
                         <div class="card-body">
                             <table id="example2" class="table table-bordered table-hover">
                                 <thead>
-                                    <tr>
-                                        <th>Pseudo</th>
-                                        <th>Age</th>
-                                        <th>Rôle</th>
+                                    <tr class="table-secondary">
+                                        <th>Regarder l'équipe</th>
+                                        <th>Nom de l'équipe</th>
+                                        <th>Date de création</th>
+                                        <th>nombre de joueurs</th>
+                                        <th hidden>id</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php
-                                     $idEquipe = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
-                                     echo arrayToHtmlTablePlayers(affichageJoueurs($idEquipe)); 
-                                     ?>
+                                    <?php echo arrayToHtmlTableTeams(affichageEquipes()); ?>
                                 </tbody>
-
                             </table>
                         </div>
                         <!-- /.card-body -->

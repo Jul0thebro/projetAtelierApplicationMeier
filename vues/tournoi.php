@@ -1,36 +1,20 @@
 <?php
-session_start();
+
 // Variables
 $tableauAffichage = array();
 $idTournoi = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 $bracketTournoi  = filter_input(INPUT_GET, 'tournoi', FILTER_SANITIZE_STRING);
-
+$affichage  = filter_input(INPUT_GET, 'affichage', FILTER_SANITIZE_STRING);
 // Permet d'aller chercher les équipes dans la base de données
 $arrayTeams = readTeamsTournament($idTournoi);
-
-$players16 = array();
-
-for ($i = 1; $i <= 16; $i++) {
-	$players16 += array($i => $i);
+if ($affichage == null) {
+	$affichage == "equipesInscrites";
 }
-
-for ($l = 1; $l <= 16; $l++) {
-	$players16[$l] = $arrayTeams[$l - 1]["nomEquipe"];
-}
-
-for ($i = count($players16) / 2; $i > 0; $i--) {
-	$random = array_rand($players16, 2);
-	array_push($tableauAffichage, $players16[$random[0]], $players16[$random[1]]);
-	unset($players16[$random[0]]);
-	unset($players16[$random[1]]);
-}
-
-$_SESSION["players"] = $tableauAffichage;
+$_SESSION["players"] = $arrayTeams;
 //echo var_dump($tableauAffichage);
 ?>
 <!DOCTYPE html>
 <html>
-
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -47,8 +31,8 @@ $_SESSION["players"] = $tableauAffichage;
 	<link href="css/tournoi.css" rel="stylesheet">
 	<link href="CSS/bootstrap.css" rel="stylesheet">
 </head>
-
 <body>
+	<!-- Navbar -->
 	<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
 		<a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#"><img height="100" width="100" src="img/iron-tournament-logo.png" /></a>
 		<button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,10 +42,11 @@ $_SESSION["players"] = $tableauAffichage;
 		<ul class="navbar-nav px-3">
 			<li class="nav-item text-nowrap">
 				<?php
-				$pseudoUser = $_SESSION["pseudo"]["pseudo"];
+			
 				if ($_SESSION["pseudo"]["pseudo"] == null) {
 					echo "<span class=\"bg-warning rounded-pill p-2\">  Vous n'êtes pas connecté !  </span>";
 				} else {
+					$pseudoUser = $_SESSION["pseudo"]["pseudo"];
 					echo "<span class=\"bg-light rounded-pill p-2\"> Vous êtes connecté en tant que " . $pseudoUser . " ! </span>";
 				}
 				?>
@@ -100,30 +85,58 @@ $_SESSION["players"] = $tableauAffichage;
 			</div>
 		</div>
 	</div>
+	<!-- div Générale -->
 	<div class="container-fluid">
 		<div class="row">
+			<!-- Navbar pour circuler entre les pages-->
 			<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
 				<div class="sidebar-sticky pt-3">
 					<ul class="nav flex-column">
 						<li class="nav-item">
-							<a class="btn btn-info mb-1" href="?uc=accueil">
+							<a class="btn btn-primary mb-1" href="?uc=accueil">
 								<span data-feather="home"></span> Accueil <span class="sr-only">(current)</span>
 							</a>
 						</li>
 						<li class="nav-item">
-							<a class="btn btn-info mb-1" href="index.php?uc=equipes">
+							<a class="btn btn-primary mb-1" href="?uc=equipes">
 								Voir les équipes
 							</a>
 						</li>
 						<li class="nav-item">
-							<a class="btn btn-info mb-1" href="#">
-								Créer une équipe
-							</a>
+							<?php
+							if ($_SESSION["pseudo"]["pseudo"] != null) {
+								$idPlayer = recupIdPlayer($_SESSION["pseudo"]["pseudo"]);
+								$idTeam = verifSiDejaIdTeam($idPlayer["idPlayer"]);
+								if ($idTeam["idEquipe"] == null) {
+									echo "<a class=\"btn btn-primary mb-1\" href=\"?uc=CreerEquipe\">
+                                Créer une équipe
+                                </a>";
+								} else {
+								}
+							} else {
+								echo "<a class=\"btn btn-primary mb-1\" href=\"\">
+                                Créer une équipe
+                                </a>";
+							}
+							?>
 						</li>
 						<li class="nav-item">
-							<a class="btn btn-info" href="#">
-								Mon équipe
-							</a>
+							<?php
+							if ($_SESSION["pseudo"]["pseudo"] != null) {
+								$idPlayer = recupIdPlayer($_SESSION["pseudo"]["pseudo"]);
+								$idTeam = verifSiDejaIdTeam($idPlayer["idPlayer"]);
+								if ($idTeam["idEquipe"] != null) {
+									echo "<a class=\"btn btn-primary mb-1\" href=\"?uc=equipe&&id=" . $idTeam["idEquipe"] . "\">
+                                    Mon équipe
+                                    </a>";
+								} else {
+								}
+							} else {
+								echo "<a class=\"btn btn-primary mb-1\" href=\"\">
+                                Mon équipe
+                                </a>";
+							}
+							?>
 						</li>
 					</ul>
 				</div>
@@ -131,143 +144,50 @@ $_SESSION["players"] = $tableauAffichage;
 
 			<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
 				<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-					<h1 class="h2">Brackets of the tournament</h1>
+					<h1 class="h2">Infos of the tournament</h1>
 					<div class="btn-toolbar mb-2 mb-md-0">
 						<div class="btn-group mr-2">
 							<form method="POST">
-								<a class="btn btn-primary" href="?uc=functionBracket&&id=<?php echo $idTournoi; ?>">Générer le tournoi</a>
+								<a class="btn btn-primary" href="?uc=tournoi&&id=<?php echo $idTournoi; ?>&&affichage=bracket">Générer le tournoi</a>
 							</form>
 							<button type="button" class="btn btn-sm btn-outline-secondary">Gérer le tournoi</button>
 						</div>
 					</div>
 				</div>
+				<!-- Navbar qui permet de choisir l'affichage de la page -->
+				<nav class="navbar navbar-expand-lg navbar-light bg-light rounded-pill">
+					<div class="container-fluid">
 
-				<div class="bracket" id="bracketPrincipale">
-
-					<!-- matchups -> matchup -> participants -> participant ou participant winner -->
-					<section class="round eighthfinals">
-						<?php if ($_SESSION["huitieme"] != null)
-							echo $_SESSION["huitieme"];
-						?>
-					</section>
-
-					<!-- Quarts de final -->
-					<section class="round quarterfinals">
-						<!-- Premier bracket quarter -->
-						<div class="winners">
-							<div class="matchups">
-								<div class="matchup">
-									<div class="participants">
-										<div class="participant winner">
-											<span> </span>
-										</div>
-										<div class="participant">
-											<span> </span>
-										</div>
-									</div>
-								</div>
-								<div class="matchup">
-									<div class="participants">
-										<div class="participant winner">
-											<span> </span>
-										</div>
-										<div class="participant">
-											<span> </span>
-										</div>
-									</div>
-								</div>
-								<div class="connector">
-									<div class="merger"></div>
-									<div class="line"></div>
-								</div>
-							</div>
+						<div class="collapse navbar-collapse" id="navbarNav">
+							<ul class="navbar-nav  ">
+								<li class="nav-item">
+									<a class="nav-link active rounded-pill text-secondary mr-2" aria-current="page" href="?uc=tournoi&&id=<?php echo $idTournoi;?>&&affichage=equipesInscrites">Equipes inscrites</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link rounded-pill text-secondary mr-2" href="?uc=tournoi&&id=<?php echo $idTournoi;?>&&affichage=bracket">Arbre du tournoi</a>
+								</li>
+								<li class="nav-item"> 
+									<a class="nav-link rounded-pill text-secondary" href="?uc=tournoi&&id=<?php echo $idTournoi;?>&&affichage=infos">Information du tournoi</a>
+								</li>
+							</ul>
 						</div>
-						<!-- Deuxieme bracket quarter -->
-						<div class="winners">
-							<div class="matchups">
-								<div class="matchup">
-									<div class="participants">
-										<div class="participant winner">
-											<span> </span>
-										</div>
-										<div class="participant">
-											<span> </span>
-										</div>
-									</div>
-								</div>
-								<div class="matchup">
-									<div class="participants">
-										<div class="participant winner">
-											<span> </span>
-										</div>
-										<div class="participant">
-											<span> </span>
-										</div>
-									</div>
-								</div>
-								<div class="connector">
-									<div class="merger"></div>
-									<div class="line"></div>
-								</div>
-							</div>
-						</div>
-					</section>
+					</div>
+				</nav>
 
-					<!-- Demis de final -->
-					<section class="round semifinals">
-						<div class="winners">
-							<div class="matchups">
-								<div class="matchup">
-									<div class="participants">
-										<div class="participant winner">
-											<span> </span>
-										</div>
-										<div class="participant">
-											<span> </span>
-										</div>
-									</div>
-								</div>
-								<div class="matchup">
-									<div class="participants">
-										<div class="participant winner">
-											<span> </span>
-										</div>
-										<div class="participant">
-											<span> </span>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="connector">
-								<div class="merger"></div>
-								<div class="line"></div>
-							</div>
-						</div>
-					</section>
-
-					<!-- final -->
-					<section class="round finals">
-						<div class="winners">
-							<div class="matchups">
-								<div class="matchup">
-									<div class="participants">
-										<div class="participant winne">
-											<span> </span>
-										</div>
-										<div class="participant">
-											<span> </span>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</section>
-				</div>
-
-				<script>
-					/*var nannnn = document.getElementById('bracketPrincipale').innerHTML;
-					JSON.stringify(nannn);*/
-				</script>
+				<?php
+				switch ($affichage) {
+					case "equipesInscrites":
+						$equipes = arrayToHtmlTableTeamsTournament(readTeamsTournament($idTournoi));
+						include "vues/tournoiEquipe.php";
+						break;
+					case "bracket":
+						include "vues/tournoiBracket.php";
+						break;
+					case "infos":
+						include "vues/tournoiInfos.php";
+						break;
+				}
+				?>
 		</div>
 		</main>
 	</div>

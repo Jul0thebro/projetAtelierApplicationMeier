@@ -1,8 +1,11 @@
 <?php
+//Constantes 
 const DROIT_DE_BASE = 3;
 const NB_JOUEURS = 5;
 
+//Méthodes
 
+//Permet d'ajouter un joueur
 function addPlayers($email, $pwd, $pseudo, $age, $jeu)
 {
   static $ps = null;
@@ -25,6 +28,7 @@ function addPlayers($email, $pwd, $pseudo, $age, $jeu)
   return $answer;
 }
 
+//Permet de créer une équipe 
 function addTeam($nomEquipe, $jeu)
 {
   static $ps = null;
@@ -36,8 +40,7 @@ function addTeam($nomEquipe, $jeu)
   try {
     $ps->bindParam(':NOM', $nomEquipe, PDO::PARAM_STR);
     $ps->bindParam(':JEU', $jeu, PDO::PARAM_INT);
-    if ($ps->execute())
-      $answer = $ps->fetch(PDO::FETCH_ASSOC);
+    $answer = $ps->execute();
   } catch (PDOException $e) {
     echo $e->getMessage();
   }
@@ -45,6 +48,28 @@ function addTeam($nomEquipe, $jeu)
   return $answer;
 }
 
+
+// Permet de sauvegarder le bracket après avoir généré le tournoi
+function saveBracket($equipe1, $equipe2, $idTournoi)
+{
+  static $ps = null;
+  $sql = "INSERT INTO brackets (equipe1, equipe2, idTournoi) VALUES (:EQUIPE1, :EQUIPE2, :TOURNOI);";
+  if ($ps == null) {
+    $ps = dbTournament()->prepare($sql);
+  }
+  $answer = false;
+  try {
+    $ps->bindParam(':TOURNOI', $idTournoi, PDO::PARAM_INT);
+    $ps->bindParam(':EQUIPE1', $equipe1, PDO::PARAM_STR);
+    $ps->bindParam(':EQUIPE2', $equipe2, PDO::PARAM_STR);
+    $answer = $ps->execute();
+  } catch (PDOException $e) {
+    echo $e->getMessage();
+  }
+  return $answer;
+}
+
+//Permet de vérifier à la connexion si les infos données sont déjà dans la base de données
 function verifyPlayers($email, $pwd)
 {
   static $ps = null;
@@ -65,6 +90,7 @@ function verifyPlayers($email, $pwd)
   return $answer;
 }
 
+//Permet de récupéper le pseudo d'un joueur par rapport à son email, cela va permettre de faire un affichage 
 function takePseudoPlayers($email)
 {
   static $ps = null;

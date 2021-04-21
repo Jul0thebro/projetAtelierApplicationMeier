@@ -164,68 +164,54 @@ body {
 /* écart entre le matchup */
 
 .bracket .round.quarterfinals .winners .matchups .matchup:not(:last-child) {
-    margin-bottom: 6.2rem;
-}
-
-.bracket .round.quarterfinals .winners .connector .line {
-    height: 0.01rem;
-}
-
-
-/* Bon placement du reliement entre les matchups*/
-
-.bracket .round.quarterfinals .winners .connector .merger {
-    height: 0.4rem;
+    margin-bottom: 4.3rem;
 }
 
 
 /* écart entre les matchups */
 
 .bracket .round.semifinals .winners .matchups .matchup:not(:last-child) {
-    margin-bottom: 29rem;
+    margin-bottom: 19.5rem;
 }
 
-
-/* Bon placement du reliement entre les matchups*/
+/*Demi de finale*/
 
 .bracket .round.semifinals .winners .connector .merger {
-    height: 30rem;
+    height: 20rem;
 }
-
-
-/* Bon placement du reliement entre le prochain matchup */
 
 .bracket .round.semifinals .winners .connector .line {
-    height: 11rem;
+    height: 10rem;
 }
 
+/*Finale*/
 .bracket .round.finals .winners .connector .merger {
-    height: 2rem;
-}
-
-.bracket .round.finals .winners .connector .line {
-    height: 1.5rem;
-}
-
-.bracket .round.eighthfinals .winners:not(:last-child) {
-    margin-bottom: 2rem;
-}
-
-.bracket .round.eighthfinals .winners .matchups .matchup:not(:last-child) {
-    margin-bottom: 2rem;
-}
-
-.bracket .round.eighthfinals .winners .connector .line {
     height: 3rem;
 }
 
+.bracket .round.finals .winners .connector .line {
+    height: 2.2rem;
+}
 
-/* Bon placement du reliement entre les matchups*/
+/*Huitième de finale*/
+.bracket .round.eighthfinals .winners:not(:last-child) {
+    margin-bottom: 1rem;
+}
+
+.bracket .round.eighthfinals .winners .matchups .matchup:not(:last-child) {
+    margin-bottom: 1rem;
+}
+
+.bracket .round.eighthfinals .winners .connector .line {
+    height: 4rem;
+}
+
 
 .bracket .round.eighthfinals .winners .connector .merger {
     height: 12rem;
 }
 
+/*Autres*/
 .bd-placeholder-img {
     font-size: 1.125rem;
     text-anchor: middle;

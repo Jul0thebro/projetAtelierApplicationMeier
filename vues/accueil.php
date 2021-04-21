@@ -9,14 +9,13 @@
                         <div class="card-body">
                             <table id="example2" class="table table-bordered table-hover">
                                 <thead>
-                                    <tr>
+                                    <tr class="table-secondary">
                                         <th>Regarder les tournois</th>
                                         <th>Nombre de places restantes</th>
                                         <th>Nom du tournoi</th>
                                         <th>Jeux</th>
                                         <th>Tailles des équipes</th>
                                         <th>Date</th>
-                                        <th>Nombre d'équipes</th>
                                         <th>Etat</th>
                                         <th>ID</th>
                                     </tr>
